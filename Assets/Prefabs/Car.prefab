@@ -429,6 +429,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5059152695585960100}
+  - component: {fileID: 298612323790462604}
+  - component: {fileID: 1016465359607081083}
   m_Layer: 0
   m_Name: Car
   m_TagString: Untagged
@@ -456,6 +458,47 @@ Transform:
   - {fileID: 5119165351427368791}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &298612323790462604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6575858079732892054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 765a9fa4fc7acdb4196a978a9e1c2358, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0
+  rotationSpeed: 0
+--- !u!54 &1016465359607081083
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6575858079732892054}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8611662904076077335
 GameObject:
   m_ObjectHideFlags: 0

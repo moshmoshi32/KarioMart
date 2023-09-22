@@ -1,0 +1,98 @@
+{
+    "name": "GameControls",
+    "maps": [
+        {
+            "name": "Car",
+            "id": "dcd45b44-8372-482a-a7f4-4891e353b3c3",
+            "actions": [
+                {
+                    "name": "VerticalMovement",
+                    "type": "Button",
+                    "id": "52e96d6e-46d6-4314-b54c-4e380c2a5973",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "HorizontalMovement",
+                    "type": "Button",
+                    "id": "6e95def6-402a-484f-ac23-dc9115fa3b29",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "VerticalAxis",
+                    "id": "3fca6673-788b-48a3-bf24-22c96dcb72e0",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "VerticalMovement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "d4fc3145-4a12-4182-9075-2928c7af07a2",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "VerticalMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "a567961b-0a5b-4735-9853-8155757d8203",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "VerticalMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "c2bfeef8-7b24-48d8-bd16-664b9a40223e",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HorizontalMovement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "3ff99916-5223-4011-bd9a-2ff21f74e5ef",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HorizontalMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "6e38f67e-c1d8-4d89-815e-8dc43054b533",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HorizontalMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
