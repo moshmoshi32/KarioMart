@@ -7,6 +7,7 @@ public class Initalization
     private static void Initalize()
     {
         GameObject go = new GameObject();
+        go.name = "GameManager";
         var playerInputManager = go.AddComponent<PlayerInputManager>();
         var gameManager = go.AddComponent<GameManager>();
         gameManager.InitalizePreState(playerInputManager);

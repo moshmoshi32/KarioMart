@@ -65,9 +65,17 @@ public class GameManager : MonoBehaviour
         playerInputManager.JoinPlayer(controlScheme: "Keyboard2", pairWithDevice: Keyboard.current);
     }
 
-    public void SetCurrentGameState(GameState newGameState)
+    private void SetCurrentGameState(GameState newGameState)
     {
         CurrentGameState = newGameState;
+        switch (newGameState)
+        {
+            case GameState.MainMenu:
+                break;
+            case GameState.Playing:
+                InitalizeGameState();
+                break;
+        }
         //TODO: Add logic for switching states
     }
 
@@ -75,7 +83,12 @@ public class GameManager : MonoBehaviour
     {
         if (scene.buildIndex == 1)
         {
-            InitalizeGameState();
+            SetCurrentGameState(GameState.MainMenu);
+        }
+
+        if (scene.buildIndex == 2)
+        {
+            SetCurrentGameState(GameState.Playing);
         }
     }
 
