@@ -7,6 +7,7 @@ public class InputManager
 {
     #region Variables
     private GameControls gameControls = new();
+    private PlayerInput input;
 
     private float verticalMovement;
 
@@ -24,22 +25,27 @@ public class InputManager
         private set => horizontalMovement = value;
     }
     #endregion
+
+    public InputManager(PlayerInput _input)
+    {
+        input = _input;
+    }
     public void SubscribeInputActions()
     {
-        gameControls.Car.VerticalMovement.performed += GetVerticalMovementAxis;
-        gameControls.Car.HorizontalMovement.performed += GetHorizontalMovementAxis;
-
-        gameControls.Car.VerticalMovement.canceled += ResetVerticalMovementAxis;
-        gameControls.Car.HorizontalMovement.canceled += ResetHorizontalMovementAxis;
+        input.currentActionMap.FindAction("VerticalMovement").performed += GetVerticalMovementAxis;
+        input.currentActionMap.FindAction("HorizontalMovement").performed += GetHorizontalMovementAxis;
+        
+        input.currentActionMap.FindAction("VerticalMovement").canceled += ResetVerticalMovementAxis;
+        input.currentActionMap.FindAction("HorizontalMovement").canceled += ResetHorizontalMovementAxis;
     }
     
     public void UnsubscribeInputActions()
     {
-        gameControls.Car.VerticalMovement.performed -= GetVerticalMovementAxis;
-        gameControls.Car.HorizontalMovement.performed -= GetHorizontalMovementAxis;
+        input.currentActionMap.FindAction("VerticalMovement").performed -= GetVerticalMovementAxis;
+        input.currentActionMap.FindAction("HorizontalMovement").performed -= GetHorizontalMovementAxis;
         
-        gameControls.Car.VerticalMovement.canceled -= ResetVerticalMovementAxis;
-        gameControls.Car.HorizontalMovement.canceled -= ResetHorizontalMovementAxis;
+        input.currentActionMap.FindAction("VerticalMovement").canceled -= ResetVerticalMovementAxis;
+        input.currentActionMap.FindAction("HorizontalMovement").canceled -= ResetHorizontalMovementAxis;
     }
 
     private void GetVerticalMovementAxis(InputAction.CallbackContext ctx)
