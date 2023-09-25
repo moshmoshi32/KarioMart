@@ -65,12 +65,19 @@ public class GameManager : MonoBehaviour
         playerInputManager.JoinPlayer(controlScheme: "Keyboard2", pairWithDevice: Keyboard.current);
     }
 
+    private void LoadMainMenu()
+    {
+        var test = Resources.Load("MainMenu") as GameObject;
+        Instantiate(test);
+    }
+
     private void SetCurrentGameState(GameState newGameState)
     {
         CurrentGameState = newGameState;
         switch (newGameState)
         {
             case GameState.MainMenu:
+                LoadMainMenu();
                 break;
             case GameState.Playing:
                 InitalizeGameState();
@@ -81,14 +88,15 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.buildIndex == 1)
+        switch (scene.buildIndex)
         {
-            SetCurrentGameState(GameState.MainMenu);
-        }
-
-        if (scene.buildIndex == 2)
-        {
-            SetCurrentGameState(GameState.Playing);
+            case 1:
+                SetCurrentGameState(GameState.MainMenu);
+                
+                break;
+            case 2:
+                SetCurrentGameState(GameState.Playing);
+                break;
         }
     }
 
