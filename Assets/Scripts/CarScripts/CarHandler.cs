@@ -15,12 +15,22 @@ public class CarHandler : MonoBehaviour
     [Range(1, 360)]
     [SerializeField] private float rotationforce;
 
+    [SerializeField] private float rotationRate = 0.6f;
+
     [Space] [SerializeField] private PlayerInput input;
     
     private CarMovement movement;
     private Rigidbody rb;
 
     private InputManager inputManager;
+
+    private LapManager lapManager;
+
+    public LapManager LapManager
+    {
+        get => lapManager;
+        private set => lapManager = value;
+    }
 
     public InputManager PlayerInputManager
     {
@@ -47,6 +57,7 @@ public class CarHandler : MonoBehaviour
         inputManager.EnableInput();
         inputManager.SubscribeInputActions();
         rb = GetComponent<Rigidbody>();
-        movement = new CarMovement(acceleration, rotationforce, rb, transform);
+        movement = new CarMovement(acceleration, rotationforce, rb, transform, rotationRate);
+        lapManager = new LapManager();
     }
 }

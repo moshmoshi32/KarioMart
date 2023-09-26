@@ -15,9 +15,8 @@ public class Initalization
         gameManager.InitalizePreState(playerInputManager);
         
         playerInputManager.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
-        playerInputManager.playerPrefab = Resources.Load("Car") as GameObject;
+        playerInputManager.playerPrefab = Resources.Load("Prefabs/Car") as GameObject;
         
         gameManager.SwitchToSelectedScene(data.levelToLoad);
-        
     }
 }

@@ -473,7 +473,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceleration: 36.1
   maxSpeed: 15
-  rotationforce: 60
+  rotationforce: 9
+  rotationRate: 0.5
   input: {fileID: -3757757450268009898}
 --- !u!54 &1016465359607081083
 Rigidbody:
@@ -485,7 +486,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 1.5
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}

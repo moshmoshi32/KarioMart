@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Level 1
   m_EditorClassIdentifier: 
   startPoints:
-  - {fileID: 0}
+  - {x: -1.7, y: 0, z: -11.38}
+  - {x: 0.75, y: 0, z: -11.38}
   checkPoints: []
   endPoint: {fileID: 0}

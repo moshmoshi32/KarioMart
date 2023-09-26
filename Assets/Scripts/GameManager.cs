@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -12,7 +13,7 @@ public class GameManager : MonoBehaviour
     
     private PlayerInputManager playerInputManager;
 
-    private List<LevelData> levelData = new List<LevelData>();
+    private LevelData currentLevelData;
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -40,19 +41,26 @@ public class GameManager : MonoBehaviour
         playerInputManager.onPlayerJoined += PlayerJoined;
     }
 
-    private void InitalizeGameState()
+    private void InitalizeGameState(int sceneIndex)
     {
+        Debug.Log(sceneIndex);
+        //Get the current level data
+        currentLevelData = Resources.Load<LevelData>($"ScriptableObject/Level {sceneIndex - 1}");
+        if (!currentLevelData)
+        {
+            Debug.LogError("Couldnt find the data level!");
+        }
         playerInputManager.JoinPlayer();
         playerInputManager.JoinPlayer(controlScheme: "Keyboard2", pairWithDevice: Keyboard.current);
     }
 
     private void LoadMainMenu()
     {
-        var test = Resources.Load("MainMenu") as GameObject;
+        var test = Resources.Load("Prefabs/MainMenu") as GameObject;
         Instantiate(test);
     }
 
-    private void SetCurrentGameState(GameState newGameState)
+    private void SetCurrentGameState(GameState newGameState, int sceneIndex = -1)
     {
         CurrentGameState = newGameState;
         switch (newGameState)
@@ -61,7 +69,7 @@ public class GameManager : MonoBehaviour
                 LoadMainMenu();
                 break;
             case GameState.Playing:
-                InitalizeGameState();
+                InitalizeGameState(sceneIndex);
                 break;
         }
         //TODO: Add logic for switching states
@@ -71,19 +79,19 @@ public class GameManager : MonoBehaviour
     {
         switch (scene.buildIndex)
         {
+            //This scene should be main menu
             case 1:
                 SetCurrentGameState(GameState.MainMenu);
-                
                 break;
             case 2:
-                SetCurrentGameState(GameState.Playing);
+                SetCurrentGameState(GameState.Playing, scene.buildIndex);
                 break;
         }
     }
 
     private void PlayerJoined(PlayerInput input)
     {
-        Debug.Log("Heyo!");
+        input.transform.position = currentLevelData.startPoints[input.playerIndex];
     }
 
     private void OnDestroy()

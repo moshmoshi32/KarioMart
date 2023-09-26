@@ -8,8 +8,9 @@ public class CarMovement
     private Transform carTransform;
     private float speed;
     private float rotationSpeed;
+    private float rotationRate;
 
-    public CarMovement(float _speed, float _rotationSpeed, Rigidbody _rb, Transform _carTransform)
+    public CarMovement(float _speed, float _rotationSpeed, Rigidbody _rb, Transform _carTransform, float rotationRate)
     {
         speed = _speed;
         rotationSpeed = _rotationSpeed;
@@ -26,6 +27,6 @@ public class CarMovement
 
     public void RotateHorizontally(float horizontalAxis)
     {
-        rb.AddTorque(carTransform.up * (0.5f * rotationSpeed * horizontalAxis));
+        rb.AddTorque(carTransform.up * (rotationSpeed * horizontalAxis));
     }
 }
