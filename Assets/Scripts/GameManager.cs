@@ -14,6 +14,14 @@ public class GameManager : MonoBehaviour
     private PlayerInputManager playerInputManager;
 
     private LevelData currentLevelData;
+
+    private int checkPointAmount = 0;
+
+    public int CheckPointAmount
+    {
+        get => checkPointAmount;
+        set => checkPointAmount = value;
+    }
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -51,7 +59,7 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Couldnt find the data level!");
         }
         playerInputManager.JoinPlayer();
-        playerInputManager.JoinPlayer(controlScheme: "Keyboard2", pairWithDevice: Keyboard.current);
+        playerInputManager.JoinPlayer();
     }
 
     private void LoadMainMenu()
@@ -91,6 +99,7 @@ public class GameManager : MonoBehaviour
 
     private void PlayerJoined(PlayerInput input)
     {
+        input.SwitchCurrentControlScheme($"Keyboard{input.playerIndex + 1}", Keyboard.current);
         input.transform.position = currentLevelData.startPoints[input.playerIndex];
     }
 

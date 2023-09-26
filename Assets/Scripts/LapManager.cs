@@ -12,6 +12,18 @@ public class LapManager
         private set => currentLap = value;
     }
 
+    private int checkPointAmount = 0;
+
+    public int CheckPointsPassed
+    {
+        get => checkPointAmount;
+        private set => checkPointAmount = value;
+    }
+
+    public void IncreaseCheckPointAmount()
+    {
+        CheckPointsPassed++;
+    }
     public void IncreaseLap()
     {
         CurrentLap++;
