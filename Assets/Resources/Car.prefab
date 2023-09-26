@@ -91,7 +91,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1781184467542960802}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9bb7fc7cbc8c3974a99d3a9768b570ba, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -196,7 +196,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1896738667704335599}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9bb7fc7cbc8c3974a99d3a9768b570ba, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -301,7 +301,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4536409769950803679}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9bb7fc7cbc8c3974a99d3a9768b570ba, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -406,7 +406,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5832359962727890196}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9bb7fc7cbc8c3974a99d3a9768b570ba, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -500,7 +500,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &-3757757450268009898
 MonoBehaviour:
@@ -643,7 +643,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8611662904076077335}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 9bb7fc7cbc8c3974a99d3a9768b570ba, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

@@ -6,6 +6,6 @@ public class MainMenu : MonoBehaviour
 {
     public void LoadGameScene()
     {
-        GameManager.Instance.SwitchToSelectedScene(2);
+        GameManager.Instance.SwitchToSelectedScene((LevelToLoad)2);
     }
 }

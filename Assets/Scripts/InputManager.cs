@@ -6,7 +6,6 @@ using UnityEngine.InputSystem;
 public class InputManager
 {
     #region Variables
-    private GameControls gameControls = new();
     private PlayerInput input;
 
     private float verticalMovement;
@@ -71,11 +70,11 @@ public class InputManager
     
     public void EnableInput()
     {
-        gameControls.Car.Enable();
+        input.currentActionMap.Enable();
     }
 
     public void DisableInput()
     {
-        gameControls.Car.Disable();
+        input.currentActionMap.Disable();
     }
 }

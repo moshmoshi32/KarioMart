@@ -3,9 +3,11 @@ using UnityEngine.InputSystem;
 
 public class Initalization
 {
+    private static IntilizationData data;
     [RuntimeInitializeOnLoadMethod]
     private static void Initalize()
     {
+        data = Resources.Load<IntilizationData>("InitalizationData");
         GameObject go = new GameObject();
         go.name = "GameManager";
         var playerInputManager = go.AddComponent<PlayerInputManager>();
@@ -15,7 +17,7 @@ public class Initalization
         playerInputManager.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
         playerInputManager.playerPrefab = Resources.Load("Car") as GameObject;
         
-        gameManager.SwitchToSelectedScene(1);
+        gameManager.SwitchToSelectedScene(data.levelToLoad);
         
     }
 }

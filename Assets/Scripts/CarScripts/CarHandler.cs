@@ -22,7 +22,11 @@ public class CarHandler : MonoBehaviour
 
     private InputManager inputManager;
 
-    private bool initalized;
+    public InputManager PlayerInputManager
+    {
+        private set => inputManager = value;
+        get => inputManager;
+    }
 
     private void Start()
     {
@@ -31,7 +35,6 @@ public class CarHandler : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (!initalized) return;
         movement.RotateHorizontally(inputManager.HorizontalMovementProperty);
         //Moving the car back and forward
         if (rb.velocity.magnitude >= maxSpeed) return;
@@ -45,6 +48,5 @@ public class CarHandler : MonoBehaviour
         inputManager.SubscribeInputActions();
         rb = GetComponent<Rigidbody>();
         movement = new CarMovement(acceleration, rotationforce, rb, transform);
-        initalized = true;
     }
 }

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,7 +9,6 @@ public class GameManager : MonoBehaviour
     public GameState CurrentGameState;
     
     public static GameManager Instance;
-    public InputManager InputManager;
     
     private PlayerInputManager playerInputManager;
 
@@ -30,20 +27,10 @@ public class GameManager : MonoBehaviour
         
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-    /// <summary>
-    /// Loads the selected scene either with a name or an sceneIndex.
-    /// </summary>
-    /// <param name="sceneNumber"></param>
-    /// <param name="sceneName"></param>
-    public void SwitchToSelectedScene(int sceneNumber = -1, string sceneName = "")
-    {
-        if (sceneNumber == -1)
-        {
-            SceneManager.LoadScene(sceneName);
-            return;
-        }
 
-        SceneManager.LoadScene(sceneNumber);
+    public void SwitchToSelectedScene(LevelToLoad levelToLoad)
+    {
+        SceneManager.LoadScene((int)levelToLoad);
     }
 
     public void InitalizePreState(PlayerInputManager inputManager)
@@ -55,12 +42,6 @@ public class GameManager : MonoBehaviour
 
     private void InitalizeGameState()
     {
-        /*
-        InputManager = new InputManager();
-        InputManager.EnableInput();
-        InputManager.SubscribeInputActions();
-        */
-
         playerInputManager.JoinPlayer();
         playerInputManager.JoinPlayer(controlScheme: "Keyboard2", pairWithDevice: Keyboard.current);
     }
