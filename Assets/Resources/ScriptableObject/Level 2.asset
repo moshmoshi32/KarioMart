@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f05993d9c44b3c48afcfe0a8d04e388, type: 3}
   m_Name: Level 2
   m_EditorClassIdentifier: 
-  startPoints: []
-  checkPoints: []
-  endPoint: {fileID: 0}
+  startPoints:
+  - {x: -0.52, y: 0, z: -11.38}
+  - {x: 2.19, y: 0, z: -11.38}
+  maxLaps: 2

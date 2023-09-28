@@ -5,6 +5,5 @@ using UnityEngine;
 public class LevelData : ScriptableObject
 {
     public List<Vector3> startPoints = new List<Vector3>();
-    public List<Vector3> checkPoints = new List<Vector3>();
-    public Transform endPoint;
+    public int maxLaps;
 }

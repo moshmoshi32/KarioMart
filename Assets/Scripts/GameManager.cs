@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,6 +9,9 @@ public class GameManager : MonoBehaviour
 {
     [HideInInspector]
     public GameState CurrentGameState;
+
+    [HideInInspector]
+    public LevelToLoad currentLevelLoaded;
     
     public static GameManager Instance;
     
@@ -16,6 +20,12 @@ public class GameManager : MonoBehaviour
     private LevelData currentLevelData;
 
     private int checkPointAmount = 0;
+
+    private List<Checkpoints> currentCheckPoints = new List<Checkpoints>();
+
+    public Action<int> playerFinished;
+
+    public int amountPlayersFinished = 0;
 
     public int CheckPointAmount
     {
@@ -33,13 +43,35 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         playerInputManager = playerInputManager == null ? GetComponent<PlayerInputManager>() : playerInputManager;
+        playerFinished += IncreasePlayerFinished;
         
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    
+    public int GetMaxLaps() => currentLevelData.maxLaps;
+
+    public void AddCheckPointToList(Checkpoints checkpoint)
+    {
+        currentCheckPoints.Add(checkpoint);
+    }
+
+    public void ResetAllCheckPoints(CarHandler player)
+    {
+        foreach (var checkpoint in currentCheckPoints)
+        {
+            checkpoint.ResetCheckPoint(player);
+        }
+    }
+
+    public void ClearCheckPointList()
+    {
+        currentCheckPoints.Clear();
     }
 
     public void SwitchToSelectedScene(LevelToLoad levelToLoad)
     {
         SceneManager.LoadScene((int)levelToLoad);
+        currentLevelLoaded = levelToLoad;
     }
 
     public void InitalizePreState(PlayerInputManager inputManager)
@@ -60,6 +92,8 @@ public class GameManager : MonoBehaviour
         }
         playerInputManager.JoinPlayer();
         playerInputManager.JoinPlayer();
+        amountPlayersFinished = 0;
+        checkPointAmount = 0;
     }
 
     private void LoadMainMenu()
@@ -75,6 +109,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.MainMenu:
                 LoadMainMenu();
+                playerFinished -= IncreasePlayerFinished;
                 break;
             case GameState.Playing:
                 InitalizeGameState(sceneIndex);
@@ -83,18 +118,33 @@ public class GameManager : MonoBehaviour
         //TODO: Add logic for switching states
     }
 
+    private void IncreasePlayerFinished(int playerIndex)
+    {
+        amountPlayersFinished++;
+        Debug.Log($"Player {playerIndex + 1} finished at time: {Time.timeSinceLevelLoad}");
+        if (amountPlayersFinished >= playerInputManager.playerCount)
+        {
+            Debug.Log("Game done!");
+            RestartCurrentLevel();
+        }
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         switch (scene.buildIndex)
         {
-            //This scene should be main menu
             case 1:
                 SetCurrentGameState(GameState.MainMenu);
                 break;
-            case 2:
+            default:
                 SetCurrentGameState(GameState.Playing, scene.buildIndex);
                 break;
         }
+    }
+
+    private void RestartCurrentLevel()
+    {
+        SwitchToSelectedScene(currentLevelLoaded);
     }
 
     private void PlayerJoined(PlayerInput input)

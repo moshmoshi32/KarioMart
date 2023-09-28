@@ -158,7 +158,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
+                    ""name"": ""positive"",
                     ""id"": ""240485b5-2721-491b-b002-a1d765aa86f2"",
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
@@ -169,7 +169,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""positive"",
+                    ""name"": ""negative"",
                     ""id"": ""a030551d-45b0-4524-bd33-f014a949cd4a"",
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",

@@ -8,21 +8,11 @@ public class InputManager
     #region Variables
     private PlayerInput input;
 
-    private float verticalMovement;
+    public float VerticalMovementProperty { get; private set; }
 
-    public float VerticalMovementProperty
-    {
-        get => verticalMovement;
-        private set => verticalMovement = value;
-    }
-    
-    private float horizontalMovement;
+    public float HorizontalMovementProperty { get; private set; }
 
-    public float HorizontalMovementProperty
-    {
-        get => horizontalMovement;
-        private set => horizontalMovement = value;
-    }
+    public int GetPlayerIndex() => input.playerIndex;
     #endregion
 
     public InputManager(PlayerInput _input)
@@ -36,15 +26,6 @@ public class InputManager
         
         input.currentActionMap.FindAction("VerticalMovement").canceled += ResetVerticalMovementAxis;
         input.currentActionMap.FindAction("HorizontalMovement").canceled += ResetHorizontalMovementAxis;
-    }
-    
-    public void UnsubscribeInputActions()
-    {
-        input.currentActionMap.FindAction("VerticalMovement").performed -= GetVerticalMovementAxis;
-        input.currentActionMap.FindAction("HorizontalMovement").performed -= GetHorizontalMovementAxis;
-        
-        input.currentActionMap.FindAction("VerticalMovement").canceled -= ResetVerticalMovementAxis;
-        input.currentActionMap.FindAction("HorizontalMovement").canceled -= ResetHorizontalMovementAxis;
     }
 
     private void GetVerticalMovementAxis(InputAction.CallbackContext ctx)

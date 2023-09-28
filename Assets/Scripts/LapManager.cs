@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class LapManager
 {
+    private CarHandler player;
     private int currentLap = 0;
 
     public int CurrentLap
@@ -12,21 +13,30 @@ public class LapManager
         private set => currentLap = value;
     }
 
-    private int checkPointAmount = 0;
+    public int CheckPointsPassed { get; private set; } = 0;
 
-    public int CheckPointsPassed
+    public LapManager(CarHandler _player)
     {
-        get => checkPointAmount;
-        private set => checkPointAmount = value;
+        player = _player;
     }
 
     public void IncreaseCheckPointAmount()
     {
         CheckPointsPassed++;
     }
-    public void IncreaseLap()
+    public bool IncreaseLap()
     {
+        GameManager.Instance.ResetAllCheckPoints(player);
         CurrentLap++;
+        CheckPointsPassed = 0;
+        if (currentLap >= GameManager.Instance.GetMaxLaps())
+        {
+            GameManager.Instance.playerFinished?.Invoke(player.PlayerInputManager.GetPlayerIndex());
+            player.DisableInput();
+            return true;
+        }
+
+        return false;
     }
 
     public void ResetLaps()

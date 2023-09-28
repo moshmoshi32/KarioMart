@@ -58,6 +58,11 @@ public class CarHandler : MonoBehaviour
         inputManager.SubscribeInputActions();
         rb = GetComponent<Rigidbody>();
         movement = new CarMovement(acceleration, rotationforce, rb, transform, rotationRate);
-        lapManager = new LapManager();
+        lapManager = new LapManager(this);
+    }
+
+    public void DisableInput()
+    {
+        inputManager.DisableInput();
     }
 }
