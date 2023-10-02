@@ -1,18 +1,37 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using TMPro;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private TextMeshProUGUI timerText;
+
+    public Action<float> updateTimer;
+
+    public bool ShouldTick { get; private set; }
+
+
+    private void UpdateTimer(float time)
     {
-        
+        timerText.text = time.ToString("n2");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ToggleTicking(bool value)
     {
-        
+        ShouldTick = value;
+    }
+
+    private void OnEnable()
+    {
+        updateTimer += UpdateTimer;
+    }
+    
+    private void OnDisable()
+    {
+        updateTimer += UpdateTimer;
     }
 }
+

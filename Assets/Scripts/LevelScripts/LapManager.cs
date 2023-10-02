@@ -24,7 +24,7 @@ public class LapManager
     {
         CheckPointsPassed++;
     }
-    public bool IncreaseLap()
+    public void IncreaseLap()
     {
         GameManager.Instance.ResetAllCheckPoints(player);
         CurrentLap++;
@@ -33,10 +33,7 @@ public class LapManager
         {
             GameManager.Instance.playerFinished?.Invoke(player.PlayerInputManager.GetPlayerIndex());
             player.DisableInput();
-            return true;
         }
-
-        return false;
     }
 
     public void ResetLaps()

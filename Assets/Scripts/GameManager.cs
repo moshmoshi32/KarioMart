@@ -27,6 +27,8 @@ public class GameManager : MonoBehaviour
 
     public int amountPlayersFinished = 0;
 
+    private UIManager uiManager;
+
     public int CheckPointAmount
     {
         get => checkPointAmount;
@@ -47,7 +49,15 @@ public class GameManager : MonoBehaviour
         
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-    
+
+    private void Update()
+    {
+        if (uiManager.ShouldTick)
+        {
+            uiManager.updateTimer?.Invoke(Time.timeSinceLevelLoad);
+        }
+    }
+
     public int GetMaxLaps() => currentLevelData.maxLaps;
 
     public void AddCheckPointToList(Checkpoints checkpoint)
@@ -79,6 +89,25 @@ public class GameManager : MonoBehaviour
         playerInputManager = inputManager;
         
         playerInputManager.onPlayerJoined += PlayerJoined;
+        
+        InitalizeGameUI();
+    }
+
+    private void InitalizeGameUI()
+    {
+        if (uiManager == null)
+        {
+            var gameUI = Resources.Load<UIManager>("Prefabs/GameUI");
+            var currentUI = Instantiate(gameUI);
+            uiManager = currentUI;
+            DontDestroyOnLoad(uiManager);
+            uiManager.ToggleTicking(false);
+            uiManager.gameObject.SetActive(false);
+        }
+        else
+        {
+            uiManager.gameObject.SetActive(true);
+        }
     }
 
     private void InitalizeGameState(int sceneIndex)
@@ -86,10 +115,14 @@ public class GameManager : MonoBehaviour
         Debug.Log(sceneIndex);
         //Get the current level data
         currentLevelData = Resources.Load<LevelData>($"ScriptableObject/Level {sceneIndex - 1}");
+        uiManager.gameObject.SetActive(true);
+        uiManager.ToggleTicking(true);
+        
         if (!currentLevelData)
         {
             Debug.LogError("Couldnt find the data level!");
         }
+        
         playerInputManager.JoinPlayer();
         playerInputManager.JoinPlayer();
         amountPlayersFinished = 0;
@@ -100,6 +133,8 @@ public class GameManager : MonoBehaviour
     {
         var test = Resources.Load("Prefabs/MainMenu") as GameObject;
         Instantiate(test);
+        uiManager.ToggleTicking(true);
+        uiManager.gameObject.SetActive(false);
     }
 
     private void SetCurrentGameState(GameState newGameState, int sceneIndex = -1)
@@ -109,7 +144,6 @@ public class GameManager : MonoBehaviour
         {
             case GameState.MainMenu:
                 LoadMainMenu();
-                playerFinished -= IncreasePlayerFinished;
                 break;
             case GameState.Playing:
                 InitalizeGameState(sceneIndex);
