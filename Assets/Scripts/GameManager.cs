@@ -303,14 +303,12 @@ public class GameManager : MonoBehaviour
     {
         LeaderBoard.SavePlayerData(currentLevelLoaded, "Test", 15.0f);
     }
-
-    [ContextMenu("Next")]
+    
     public void NextLevel()
     {
         SwitchToSelectedScene(++currentLevelLoaded);
     }
-
-    [ContextMenu("Restart")]
+    
     private void RestartCurrentLevel()
     { 
         SwitchToSelectedScene(currentLevelLoaded);
