@@ -15,4 +15,4 @@ MonoBehaviour:
   startPoints:
   - {x: -0.52, y: 0, z: -11.38}
   - {x: 2.19, y: 0, z: -11.38}
-  maxLaps: 2
+  maxLaps: 1

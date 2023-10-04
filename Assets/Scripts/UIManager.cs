@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     [Header("Panel References")]
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject gamePanel;
-
+    [SerializeField] private GameObject namePanel;
     private int maxLaps;
 
     public Action<float> updateTimer;
@@ -45,16 +45,43 @@ public class UIManager : MonoBehaviour
     public void ReturnToMainMenu()
     {
         GameManager.Instance.SwitchToSelectedScene(LevelToLoad.MainMenu);
-        ToggleMenus(false);
+        ToggleGameAndPausePanel(false);
+        DisableVictoryScreen();
+    }
+
+    public void NextLevel()
+    {
+        GameManager.Instance.NextLevel();
+        DisableVictoryScreen();
     }
 
     public void RestartLevel()
     {
         GameManager.Instance.restartScene?.Invoke();
-        ToggleMenus(false);
+        ToggleGameAndPausePanel(false);
+        DisableVictoryScreen();
     }
 
-    public void ToggleMenus(bool toggle)
+    private void DisableVictoryScreen()
+    {
+        namePanel.SetActive(false);
+    }
+
+    public void VictoryScreen()
+    {
+        gamePanel.SetActive(false);
+        namePanel.SetActive(true);
+    }
+
+    public void InitalizeGameUI()
+    {
+        gamePanel.SetActive(true);
+        namePanel.SetActive(false);
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    public void ToggleGameAndPausePanel(bool toggle)
     {
         pauseMenu.SetActive(toggle);
         gamePanel.SetActive(!toggle);

@@ -51,6 +51,8 @@ public class GameManager : MonoBehaviour
 
     private List<CarHandler> carsPassed = new List<CarHandler>();
 
+    private int playerWinnerIndex = -1;
+
     public int CheckPointAmount
     {
         get => checkPointAmount;
@@ -96,8 +98,9 @@ public class GameManager : MonoBehaviour
     private void PauseGame()
     {
         Time.timeScale = 0;
+        ChangeCursorMode(CursorLockMode.Confined, true);
         uiManager.ToggleTicking(false);
-        uiManager.ToggleMenus(true);
+        uiManager.ToggleGameAndPausePanel(true);
     }
 
     public int GetMaxLaps() => currentLevelData.maxLaps;
@@ -140,8 +143,19 @@ public class GameManager : MonoBehaviour
         uiManager.UpdateLaps(currentGlobalLap);
     }
 
+    private void ChangeCursorMode(CursorLockMode lockMode, bool visible)
+    {
+        Cursor.lockState = lockMode;
+        Cursor.visible = visible;
+    }
+
     public void SwitchToSelectedScene(LevelToLoad levelToLoad)
     {
+        if (levelToLoad > Enum.GetValues(typeof(LevelToLoad)).Cast<LevelToLoad>().Last())
+        {
+            SceneManager.LoadScene((int)LevelToLoad.MainMenu);
+            return;
+        }
         SceneManager.LoadScene((int)levelToLoad);
         currentLevelLoaded = levelToLoad;
     }
@@ -179,7 +193,14 @@ public class GameManager : MonoBehaviour
         {
             Time.timeScale = 1;
             uiManager.ToggleTicking(true);
+            ChangeCursorMode(CursorLockMode.Locked, false);
+            currentLevelData = Resources.Load<LevelData>($"ScriptableObject/Level {sceneIndex - 1}");
             return;
+        }
+
+        if (previousGameState == GameState.Result)
+        {
+            uiManager.InitalizeGameUI();
         }
         //Get the current level data
         currentLevelData = Resources.Load<LevelData>($"ScriptableObject/Level {sceneIndex - 1}");
@@ -193,12 +214,20 @@ public class GameManager : MonoBehaviour
         
         playerInputManager.JoinPlayer();
         playerInputManager.JoinPlayer();
+        InitalizeTrack();
+        uiManager.InitalizeGameUI();
+    }
+
+    private void InitalizeTrack()
+    {
         uiManager.InitalizeLapText(currentLevelData.maxLaps);
         amountPlayersFinished = 0;
         checkPointAmount = 0;
         currentGlobalLap = 1;
         carsPassed.Clear();
         currentCheckPoints.Clear();
+        ChangeCursorMode(CursorLockMode.Locked, false);
+        playerWinnerIndex = -1;
     }
 
     private void LoadMainMenu()
@@ -207,6 +236,7 @@ public class GameManager : MonoBehaviour
         Instantiate(test);
         uiManager.ToggleTicking(true);
         uiManager.gameObject.SetActive(false);
+        ChangeCursorMode(CursorLockMode.Confined, true);
     }
 
     public void SetCurrentGameState(GameState newGameState, int sceneIndex = -1)
@@ -224,19 +254,30 @@ public class GameManager : MonoBehaviour
             case GameState.Paused:
                 PauseGame();
                 break;
+            case GameState.Result:
+                EndGame();
+                break;
         }
         //TODO: Add logic for switching states
     }
 
-    private void IncreasePlayerFinished(int playerIndex)
+    private void IncreasePlayerFinished(int playerWon)
     {
+        playerWinnerIndex = playerWinnerIndex == -1 ? playerWon : playerWinnerIndex;
         amountPlayersFinished++;
-        Debug.Log($"Player {playerIndex + 1} finished at time: {Time.timeSinceLevelLoad}");
+        Debug.Log($"Player {playerWinnerIndex + 1} finished at time: {Time.timeSinceLevelLoad}");
         if (AllPlayersFinishedRace())
         {
             Debug.Log("Game done!");
-            RestartCurrentLevel();
+            SetCurrentGameState(GameState.Result);
         }
+    }
+
+    private void EndGame()
+    {
+        Debug.Log($"Player{playerWinnerIndex + 1} won!");
+        uiManager.VictoryScreen();
+        ChangeCursorMode(CursorLockMode.Confined, true);
     }
 
     private bool AllPlayersFinishedRace()
@@ -263,8 +304,15 @@ public class GameManager : MonoBehaviour
         LeaderBoard.SavePlayerData(currentLevelLoaded, "Test", 15.0f);
     }
 
-    private void RestartCurrentLevel()
+    [ContextMenu("Next")]
+    public void NextLevel()
     {
+        SwitchToSelectedScene(++currentLevelLoaded);
+    }
+
+    [ContextMenu("Restart")]
+    private void RestartCurrentLevel()
+    { 
         SwitchToSelectedScene(currentLevelLoaded);
     }
 
@@ -286,6 +334,7 @@ public class GameManager : MonoBehaviour
         pauseGame -= PauseAction;
         restartScene -= RestartCurrentLevel;
         playerPassedFinishLine -= IncreasePlayersPassedGoal;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 }
 
