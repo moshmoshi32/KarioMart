@@ -44,6 +44,15 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""f3b56667-8812-451d-a12b-7df04727881f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -178,6 +187,17 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""action"": ""HorizontalMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6f38aaea-9c57-466b-87e0-35c9f747ad88"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -211,6 +231,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         m_Car = asset.FindActionMap("Car", throwIfNotFound: true);
         m_Car_VerticalMovement = m_Car.FindAction("VerticalMovement", throwIfNotFound: true);
         m_Car_HorizontalMovement = m_Car.FindAction("HorizontalMovement", throwIfNotFound: true);
+        m_Car_Pause = m_Car.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -274,12 +295,14 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
     private List<ICarActions> m_CarActionsCallbackInterfaces = new List<ICarActions>();
     private readonly InputAction m_Car_VerticalMovement;
     private readonly InputAction m_Car_HorizontalMovement;
+    private readonly InputAction m_Car_Pause;
     public struct CarActions
     {
         private @GameControls m_Wrapper;
         public CarActions(@GameControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @VerticalMovement => m_Wrapper.m_Car_VerticalMovement;
         public InputAction @HorizontalMovement => m_Wrapper.m_Car_HorizontalMovement;
+        public InputAction @Pause => m_Wrapper.m_Car_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Car; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -295,6 +318,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @HorizontalMovement.started += instance.OnHorizontalMovement;
             @HorizontalMovement.performed += instance.OnHorizontalMovement;
             @HorizontalMovement.canceled += instance.OnHorizontalMovement;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         private void UnregisterCallbacks(ICarActions instance)
@@ -305,6 +331,9 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             @HorizontalMovement.started -= instance.OnHorizontalMovement;
             @HorizontalMovement.performed -= instance.OnHorizontalMovement;
             @HorizontalMovement.canceled -= instance.OnHorizontalMovement;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         public void RemoveCallbacks(ICarActions instance)
@@ -344,5 +373,6 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
     {
         void OnVerticalMovement(InputAction.CallbackContext context);
         void OnHorizontalMovement(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

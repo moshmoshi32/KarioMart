@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
 {
     [HideInInspector]
     public GameState CurrentGameState;
+    
+    private GameState previousGameState;
 
     [HideInInspector]
     public LevelToLoad currentLevelLoaded;
@@ -23,11 +25,16 @@ public class GameManager : MonoBehaviour
 
     private List<Checkpoints> currentCheckPoints = new List<Checkpoints>();
 
-    public Action<int> playerFinished;
-
+    [HideInInspector]
     public int amountPlayersFinished = 0;
 
     private UIManager uiManager;
+    
+    public Action<int> playerFinished;
+
+    public Action<bool> pauseGame;
+
+    public Action restartScene;
 
     public int CheckPointAmount
     {
@@ -46,6 +53,8 @@ public class GameManager : MonoBehaviour
 
         playerInputManager = playerInputManager == null ? GetComponent<PlayerInputManager>() : playerInputManager;
         playerFinished += IncreasePlayerFinished;
+        pauseGame += PauseAction;
+        restartScene += RestartCurrentLevel;
         
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -56,6 +65,19 @@ public class GameManager : MonoBehaviour
         {
             uiManager.updateTimer?.Invoke(Time.timeSinceLevelLoad);
         }
+    }
+
+    private void PauseAction(bool pause)
+    {
+        if (currentLevelLoaded == LevelToLoad.MainMenu) return;
+        SetCurrentGameState(GameState.Paused);
+    }
+
+    private void PauseGame()
+    {
+        Time.timeScale = 0;
+        uiManager.ToggleTicking(false);
+        uiManager.ToggleMenus(true);
     }
 
     public int GetMaxLaps() => currentLevelData.maxLaps;
@@ -71,11 +93,6 @@ public class GameManager : MonoBehaviour
         {
             checkpoint.ResetCheckPoint(player);
         }
-    }
-
-    public void ClearCheckPointList()
-    {
-        currentCheckPoints.Clear();
     }
 
     public void SwitchToSelectedScene(LevelToLoad levelToLoad)
@@ -112,6 +129,12 @@ public class GameManager : MonoBehaviour
 
     private void InitalizeGameState(int sceneIndex)
     {
+        if (previousGameState == GameState.Paused)
+        {
+            Time.timeScale = 1;
+            uiManager.ToggleTicking(true);
+            return;
+        }
         Debug.Log(sceneIndex);
         //Get the current level data
         currentLevelData = Resources.Load<LevelData>($"ScriptableObject/Level {sceneIndex - 1}");
@@ -137,8 +160,9 @@ public class GameManager : MonoBehaviour
         uiManager.gameObject.SetActive(false);
     }
 
-    private void SetCurrentGameState(GameState newGameState, int sceneIndex = -1)
+    public void SetCurrentGameState(GameState newGameState, int sceneIndex = -1)
     {
+        previousGameState = CurrentGameState;
         CurrentGameState = newGameState;
         switch (newGameState)
         {
@@ -147,6 +171,9 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Playing:
                 InitalizeGameState(sceneIndex);
+                break;
+            case GameState.Paused:
+                PauseGame();
                 break;
         }
         //TODO: Add logic for switching states
@@ -190,6 +217,8 @@ public class GameManager : MonoBehaviour
     private void OnDestroy()
     {
         playerInputManager.onPlayerJoined -= PlayerJoined;
+        pauseGame -= PauseAction;
+        restartScene -= RestartCurrentLevel;
     }
 }
 

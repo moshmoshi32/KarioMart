@@ -6,27 +6,40 @@ public class CarMovement
 {
     private Rigidbody rb;
     private Transform carTransform;
-    private float speed;
+    private float maxSpeed;
+    private float currentSpeed;
     private float rotationSpeed;
     private float rotationRate;
+    private float acceleration;
 
-    public CarMovement(float _speed, float _rotationSpeed, Rigidbody _rb, Transform _carTransform, float rotationRate)
+    public CarMovement(float _maxSpeed, float _rotationSpeed, Rigidbody _rb, Transform _carTransform, float _rotationRate, float _acceleration)
     {
-        speed = _speed;
+        maxSpeed = _maxSpeed;
         rotationSpeed = _rotationSpeed;
         rb = _rb;
         carTransform = _carTransform;
+        rotationRate = _rotationRate;
+        acceleration = _acceleration;
     }
 
     public void MoveVertical(float movementAxis)
     {
+        currentSpeed = rb.velocity.magnitude;
+        
         if (movementAxis == 0) return;
+        if (currentSpeed >= maxSpeed) return;
+        Debug.Log($"currentspeed: {currentSpeed} / maxSpeed: {maxSpeed}");
         Vector3 direction = movementAxis == 1 ? carTransform.forward : -carTransform.forward;
-        rb.AddForce(direction * speed, ForceMode.Acceleration);
+        rb.AddForce(direction * acceleration, ForceMode.Acceleration);
     }
 
     public void RotateHorizontally(float horizontalAxis)
     {
         rb.AddTorque(carTransform.up * (rotationSpeed * horizontalAxis));
+    }
+
+    public void SetNewMaxSpeed(float newMaxSpeed)
+    {
+        maxSpeed = newMaxSpeed;
     }
 }

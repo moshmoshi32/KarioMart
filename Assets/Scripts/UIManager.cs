@@ -8,6 +8,8 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject gamePanel;
 
     public Action<float> updateTimer;
 
@@ -32,6 +34,29 @@ public class UIManager : MonoBehaviour
     private void OnDisable()
     {
         updateTimer += UpdateTimer;
+    }
+
+    public void ReturnToMainMenu()
+    {
+        GameManager.Instance.SwitchToSelectedScene(LevelToLoad.MainMenu);
+        ToggleMenus(false);
+    }
+
+    public void RestartLevel()
+    {
+        GameManager.Instance.restartScene?.Invoke();
+        ToggleMenus(false);
+    }
+
+    public void ToggleMenus(bool toggle)
+    {
+        pauseMenu.SetActive(toggle);
+        gamePanel.SetActive(!toggle);
+
+        if (!toggle)
+        {
+            GameManager.Instance.SetCurrentGameState(GameState.Playing);
+        }
     }
 }
 

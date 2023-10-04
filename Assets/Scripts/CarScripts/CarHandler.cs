@@ -3,21 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CarHandler : MonoBehaviour
 {
-    [Header("Car Properties")]
-    [Range(10f, 100)]
-    [SerializeField] private float acceleration;
-    [Space] [SerializeField] private float maxSpeed;
-    [Space]
-    [Range(1, 360)]
-    [SerializeField] private float rotationforce;
-
-    [SerializeField] private float rotationRate = 0.6f;
-
     [Space] [SerializeField] private PlayerInput input;
+
+    [SerializeField] private CarInformationSO carInfo;
     
     private CarMovement movement;
     private Rigidbody rb;
@@ -46,8 +39,6 @@ public class CarHandler : MonoBehaviour
     public void FixedUpdate()
     {
         movement.RotateHorizontally(inputManager.HorizontalMovementProperty);
-        //Moving the car back and forward
-        if (rb.velocity.magnitude >= maxSpeed) return;
         movement.MoveVertical(inputManager.VerticalMovementProperty);
     }
 
@@ -57,7 +48,7 @@ public class CarHandler : MonoBehaviour
         inputManager.EnableInput();
         inputManager.SubscribeInputActions();
         rb = GetComponent<Rigidbody>();
-        movement = new CarMovement(acceleration, rotationforce, rb, transform, rotationRate);
+        movement = new CarMovement(carInfo.maxSpeed, carInfo.rotationforce, rb, transform, carInfo.rotationRate, carInfo.acceleration);
         lapManager = new LapManager(this);
     }
 

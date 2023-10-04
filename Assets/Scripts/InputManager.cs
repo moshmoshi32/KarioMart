@@ -11,6 +11,8 @@ public class InputManager
     public float VerticalMovementProperty { get; private set; }
 
     public float HorizontalMovementProperty { get; private set; }
+    
+    public bool PauseProperty { get; private set; }
 
     public int GetPlayerIndex() => input.playerIndex;
     #endregion
@@ -23,9 +25,17 @@ public class InputManager
     {
         input.currentActionMap.FindAction("VerticalMovement").performed += GetVerticalMovementAxis;
         input.currentActionMap.FindAction("HorizontalMovement").performed += GetHorizontalMovementAxis;
+
+        input.currentActionMap.FindAction("Pause").started += GetPauseButtonDown;
         
         input.currentActionMap.FindAction("VerticalMovement").canceled += ResetVerticalMovementAxis;
         input.currentActionMap.FindAction("HorizontalMovement").canceled += ResetHorizontalMovementAxis;
+        
+    }
+
+    private void GetPauseButtonDown(InputAction.CallbackContext ctx)
+    {
+        GameManager.Instance.pauseGame?.Invoke(ctx.started);
     }
 
     private void GetVerticalMovementAxis(InputAction.CallbackContext ctx)

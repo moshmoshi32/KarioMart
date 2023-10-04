@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
-    public void LoadGameScene()
+    public void LoadGameScene(int scene)
     {
-        GameManager.Instance.SwitchToSelectedScene((LevelToLoad)2);
+        GameManager.Instance.SwitchToSelectedScene((LevelToLoad)scene);
     }
 }
