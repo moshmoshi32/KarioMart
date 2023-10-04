@@ -19,6 +19,7 @@ public class CarHandler : MonoBehaviour
 
     private LapManager lapManager;
 
+    private bool carInitalized = false;
     public LapManager LapManager
     {
         get => lapManager;
@@ -30,26 +31,23 @@ public class CarHandler : MonoBehaviour
         private set => inputManager = value;
         get => inputManager;
     }
-
-    private void Start()
-    {
-        InitalizeCar();
-    }
-
     public void FixedUpdate()
     {
+        if (!carInitalized) return;
         movement.RotateHorizontally(inputManager.HorizontalMovementProperty);
         movement.MoveVertical(inputManager.VerticalMovementProperty);
     }
 
-    private void InitalizeCar()
+    public void InitalizeCar(CarInformationSO carDetails)
     {
         inputManager = new InputManager(input);
         inputManager.EnableInput();
         inputManager.SubscribeInputActions();
         rb = GetComponent<Rigidbody>();
+        carInfo = carDetails;
         movement = new CarMovement(carInfo.maxSpeed, carInfo.rotationforce, rb, transform, carInfo.rotationRate, carInfo.acceleration);
         lapManager = new LapManager(this);
+        carInitalized = true;
     }
 
     public void DisableInput()

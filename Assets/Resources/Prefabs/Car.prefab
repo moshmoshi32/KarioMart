@@ -473,7 +473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   input: {fileID: -3757757450268009898}
-  carInfo: {fileID: 11400000, guid: 18b84c08a79d2584da1c785dcf7bd01f, type: 2}
+  carInfo: {fileID: 0}
 --- !u!54 &1016465359607081083
 Rigidbody:
   m_ObjectHideFlags: 0

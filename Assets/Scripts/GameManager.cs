@@ -4,9 +4,15 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] 
+    private List<CarInformationSO> avaliableCars = new List<CarInformationSO>();
+    [Space]
+    [Space]
+    
     [HideInInspector]
     public GameState CurrentGameState;
     
@@ -67,6 +73,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void PopulateCarInformation(List<CarInformationSO> cars)
+    {
+        avaliableCars = cars;
+    }
     private void PauseAction(bool pause)
     {
         if (currentLevelLoaded == LevelToLoad.MainMenu) return;
@@ -101,8 +111,9 @@ public class GameManager : MonoBehaviour
         currentLevelLoaded = levelToLoad;
     }
 
-    public void InitalizePreState(PlayerInputManager inputManager)
+    public void InitalizePreState(PlayerInputManager inputManager, List<CarInformationSO> cars)
     {
+        PopulateCarInformation(cars);
         playerInputManager = inputManager;
         
         playerInputManager.onPlayerJoined += PlayerJoined;
@@ -135,7 +146,6 @@ public class GameManager : MonoBehaviour
             uiManager.ToggleTicking(true);
             return;
         }
-        Debug.Log(sceneIndex);
         //Get the current level data
         currentLevelData = Resources.Load<LevelData>($"ScriptableObject/Level {sceneIndex - 1}");
         uiManager.gameObject.SetActive(true);
@@ -210,6 +220,12 @@ public class GameManager : MonoBehaviour
 
     private void PlayerJoined(PlayerInput input)
     {
+        //Get a random car data
+        //TODO: Fix so that you can actually pick a car
+        var randomCarIndex = Random.Range(0, avaliableCars.Count);
+        var carHandler = input.GetComponent<CarHandler>();
+        Debug.Log(randomCarIndex);
+        carHandler.InitalizeCar(avaliableCars[randomCarIndex]);
         input.SwitchCurrentControlScheme($"Keyboard{input.playerIndex + 1}", Keyboard.current);
         input.transform.position = currentLevelData.startPoints[input.playerIndex];
     }
