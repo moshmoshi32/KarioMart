@@ -35,12 +35,21 @@ public class GameManager : MonoBehaviour
     public int amountPlayersFinished = 0;
 
     private UIManager uiManager;
+
+    #region Actions
     
     public Action<int> playerFinished;
+
+    public Action<CarHandler> playerPassedFinishLine;
 
     public Action<bool> pauseGame;
 
     public Action restartScene;
+    #endregion
+
+    private int currentGlobalLap;
+
+    private List<CarHandler> carsPassed = new List<CarHandler>();
 
     public int CheckPointAmount
     {
@@ -61,6 +70,7 @@ public class GameManager : MonoBehaviour
         playerFinished += IncreasePlayerFinished;
         pauseGame += PauseAction;
         restartScene += RestartCurrentLevel;
+        playerPassedFinishLine += IncreasePlayersPassedGoal;
         
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -97,12 +107,37 @@ public class GameManager : MonoBehaviour
         currentCheckPoints.Add(checkpoint);
     }
 
+    private void IncreasePlayersPassedGoal(CarHandler carPassed)
+    {
+        AddPlayerToLapFinished(carPassed);
+        Debug.Log($"{carsPassed.Count} / {playerInputManager.playerCount}");
+        if (carsPassed.Count >= playerInputManager.playerCount)
+        {
+            IncreaseLapUI();
+            carsPassed.Clear();
+        }
+    }
+
+    private void AddPlayerToLapFinished(CarHandler car)
+    {
+        if (!carsPassed.Contains(car))
+        {
+           carsPassed.Add(car); 
+        }
+    }
+
     public void ResetAllCheckPoints(CarHandler player)
     {
         foreach (var checkpoint in currentCheckPoints)
         {
             checkpoint.ResetCheckPoint(player);
         }
+    }
+
+    private void IncreaseLapUI()
+    {
+        currentGlobalLap++;
+        uiManager.UpdateLaps(currentGlobalLap);
     }
 
     public void SwitchToSelectedScene(LevelToLoad levelToLoad)
@@ -158,8 +193,12 @@ public class GameManager : MonoBehaviour
         
         playerInputManager.JoinPlayer();
         playerInputManager.JoinPlayer();
+        uiManager.InitalizeLapText(currentLevelData.maxLaps);
         amountPlayersFinished = 0;
         checkPointAmount = 0;
+        currentGlobalLap = 1;
+        carsPassed.Clear();
+        currentCheckPoints.Clear();
     }
 
     private void LoadMainMenu()
@@ -193,11 +232,16 @@ public class GameManager : MonoBehaviour
     {
         amountPlayersFinished++;
         Debug.Log($"Player {playerIndex + 1} finished at time: {Time.timeSinceLevelLoad}");
-        if (amountPlayersFinished >= playerInputManager.playerCount)
+        if (AllPlayersFinishedRace())
         {
             Debug.Log("Game done!");
             RestartCurrentLevel();
         }
+    }
+
+    private bool AllPlayersFinishedRace()
+    {
+        return amountPlayersFinished >= playerInputManager.playerCount;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -211,6 +255,12 @@ public class GameManager : MonoBehaviour
                 SetCurrentGameState(GameState.Playing, scene.buildIndex);
                 break;
         }
+    }
+
+    [ContextMenu("Save")]
+    public void TestSaveData()
+    {
+        LeaderBoard.SavePlayerData(currentLevelLoaded, "Test", 15.0f);
     }
 
     private void RestartCurrentLevel()
@@ -235,6 +285,7 @@ public class GameManager : MonoBehaviour
         playerInputManager.onPlayerJoined -= PlayerJoined;
         pauseGame -= PauseAction;
         restartScene -= RestartCurrentLevel;
+        playerPassedFinishLine -= IncreasePlayersPassedGoal;
     }
 }
 

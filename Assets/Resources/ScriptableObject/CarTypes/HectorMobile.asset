@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: HectorMobile
   m_EditorClassIdentifier: 
   acceleration: 30.2
-  maxSpeed: 7
+  maxSpeed: 15
   rotationforce: 271
   rotationRate: 0.6

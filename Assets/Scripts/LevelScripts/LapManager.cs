@@ -27,6 +27,7 @@ public class LapManager
     public void IncreaseLap()
     {
         GameManager.Instance.ResetAllCheckPoints(player);
+        GameManager.Instance.playerPassedFinishLine?.Invoke(player);
         CurrentLap++;
         CheckPointsPassed = 0;
         if (currentLap >= GameManager.Instance.GetMaxLaps())

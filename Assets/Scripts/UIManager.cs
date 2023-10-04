@@ -7,9 +7,15 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Text References")]
     [SerializeField] private TextMeshProUGUI timerText;
+    [SerializeField] private TextMeshProUGUI lapText;
+    [Space]
+    [Header("Panel References")]
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject gamePanel;
+
+    private int maxLaps;
 
     public Action<float> updateTimer;
 
@@ -57,6 +63,18 @@ public class UIManager : MonoBehaviour
         {
             GameManager.Instance.SetCurrentGameState(GameState.Playing);
         }
+    }
+
+    public void UpdateLaps(int newLap)
+    {
+        lapText.text = $"{newLap} / {maxLaps}";
+        Debug.Log("updated laps!");
+    }
+
+    public void InitalizeLapText(int maxLap)
+    {
+        maxLaps = maxLap;
+        lapText.text = $" 1 / {maxLap}";
     }
 }
 

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Ferrari
   m_EditorClassIdentifier: 
   acceleration: 29.9
-  maxSpeed: 11
+  maxSpeed: 15
   rotationforce: 157
   rotationRate: 0.6

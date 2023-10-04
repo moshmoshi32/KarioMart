@@ -28,7 +28,6 @@ public class CarMovement
         
         if (movementAxis == 0) return;
         if (currentSpeed >= maxSpeed) return;
-        Debug.Log($"currentspeed: {currentSpeed} / maxSpeed: {maxSpeed}");
         Vector3 direction = movementAxis == 1 ? carTransform.forward : -carTransform.forward;
         rb.AddForce(direction * acceleration, ForceMode.Acceleration);
     }
