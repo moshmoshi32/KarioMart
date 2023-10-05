@@ -27,4 +27,12 @@ public class TimerManager
             }
         }
     }
+
+    public void DestroyAllTimers()
+    {
+        for (int i = 0; i < timers.Count; i++)
+        {
+            timers.Remove(timers[i]);
+        }
+    }
 }

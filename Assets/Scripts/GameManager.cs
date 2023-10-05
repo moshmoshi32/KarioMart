@@ -8,6 +8,8 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+    
     [SerializeField] 
     private List<CarInformationSO> avaliableCars = new List<CarInformationSO>();
     [Space]
@@ -20,8 +22,8 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector]
     public LevelToLoad currentLevelLoaded;
-    
-    public static GameManager Instance;
+
+    private LevelToLoad previousLevelLoaded;
     
     private PlayerInputManager playerInputManager;
 
@@ -52,8 +54,8 @@ public class GameManager : MonoBehaviour
     private List<CarHandler> carsPassed = new List<CarHandler>();
 
     private int playerWinnerIndex = -1;
-
-    private int playerAmount = 0;
+    
+    private float timeCompleted;
     
     public TimerManager TimerManager { get; private set; }
 
@@ -85,7 +87,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (!TimerManager.IsTimersListEmpty())
+        if (!TimerManager.IsTimersListEmpty() && uiManager.ShouldTick)
         {
             TimerManager.TickTimer(Time.deltaTime);
         }
@@ -206,7 +208,11 @@ public class GameManager : MonoBehaviour
             ChangeCursorMode(CursorLockMode.Locked, false);
             return;
         }
-        
+        InitalizeCurrentScene();
+    }
+
+    private void InitalizeCurrentScene()
+    {
         //Get the current level data
         uiManager.gameObject.SetActive(true);
         uiManager.ToggleTicking(true);
@@ -220,7 +226,7 @@ public class GameManager : MonoBehaviour
         playerInputManager.JoinPlayer();
 
         InitalizeTrack();
-        uiManager.InitalizeGameUI();
+        uiManager.InitalizeGameUI(); 
     }
 
     private void InitalizeTrack()
@@ -268,13 +274,16 @@ public class GameManager : MonoBehaviour
 
     private void IncreasePlayerFinished(int playerWon)
     {
+        if (timeCompleted == 0)
+        {
+            timeCompleted = Time.timeSinceLevelLoad;
+        }
         playerWinnerIndex = playerWinnerIndex == -1 ? playerWon : playerWinnerIndex;
         amountPlayersFinished++;
         Debug.Log($"Player {playerWinnerIndex + 1} finished at time: {Time.timeSinceLevelLoad}");
         if (AllPlayersFinishedRace())
         {
             Debug.Log("Game done!");
-            playerAmount = 0;
             SetCurrentGameState(GameState.Result);
         }
     }
@@ -293,6 +302,14 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        previousLevelLoaded = currentLevelLoaded;
+        TimerManager.DestroyAllTimers();
+        if (CurrentGameState == GameState.Restarted)
+        {
+            Debug.Log("????????????????");
+            SetCurrentGameState(GameState.Playing);
+            return;
+        }
         switch (scene.buildIndex)
         {
             case 1:
@@ -304,11 +321,18 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-
-    [ContextMenu("Save")]
-    public void TestSaveData()
+    
+    public void SaveData(string playerName)
     {
-        LeaderBoard.SavePlayerData(currentLevelLoaded, "Test", 15.0f);
+        Debug.Log(playerName);
+        if (string.IsNullOrEmpty(playerName))
+        {
+            Debug.Log("Name is empty, returning...");
+            return;
+        }
+        
+        LeaderBoard.SavePlayerData(previousLevelLoaded, playerName, timeCompleted);
+        timeCompleted = 0;
     }
     
     public void NextLevel()
@@ -329,7 +353,6 @@ public class GameManager : MonoBehaviour
         carHandler.InitalizeCar(avaliableCars[randomCarIndex]);
         input.SwitchCurrentControlScheme($"Keyboard{input.playerIndex + 1}", Keyboard.current);
         input.transform.position = currentLevelData.startPoints[input.playerIndex];
-        playerAmount++;
     }
 
     private void OnDestroy()
@@ -348,5 +371,6 @@ public enum GameState
     MainMenu = 1,
     Playing = 2,
     Paused = 3,
-    Result = 4
+    Restarted = 4,
+    Result = 5
 }

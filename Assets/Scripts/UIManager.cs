@@ -15,6 +15,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject gamePanel;
     [SerializeField] private GameObject namePanel;
+
+    [Space] [Header("Input References")] [SerializeField]
+    private TMP_InputField nameField;
     private int maxLaps;
 
     public Action<float> updateTimer;
@@ -32,14 +35,10 @@ public class UIManager : MonoBehaviour
         ShouldTick = value;
     }
 
-    private void OnEnable()
+    public void SaveData()
     {
-        updateTimer += UpdateTimer;
-    }
-    
-    private void OnDisable()
-    {
-        updateTimer += UpdateTimer;
+        GameManager.Instance.SaveData(nameField.text);
+        nameField.text = "";
     }
 
     public void ReturnToMainMenu()
@@ -60,6 +59,7 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.restartScene?.Invoke();
         ToggleGameAndPausePanel(false);
         DisableVictoryScreen();
+        GameManager.Instance.SetCurrentGameState(GameState.Restarted);
     }
 
     private void DisableVictoryScreen()
@@ -85,11 +85,19 @@ public class UIManager : MonoBehaviour
     {
         pauseMenu.SetActive(toggle);
         gamePanel.SetActive(!toggle);
-
+/*
         if (!toggle)
         {
             GameManager.Instance.SetCurrentGameState(GameState.Playing);
         }
+        */
+    }
+
+    public void ResumeGame()
+    {
+        pauseMenu.SetActive(false);
+        gamePanel.SetActive(true);
+        GameManager.Instance.SetCurrentGameState(GameState.Playing);
     }
 
     public void UpdateLaps(int newLap)
@@ -102,6 +110,16 @@ public class UIManager : MonoBehaviour
     {
         maxLaps = maxLap;
         lapText.text = $" 1 / {maxLap}";
+    }
+    
+    private void OnEnable()
+    {
+        updateTimer += UpdateTimer;
+    }
+    
+    private void OnDisable()
+    {
+        updateTimer += UpdateTimer;
     }
 }
 
