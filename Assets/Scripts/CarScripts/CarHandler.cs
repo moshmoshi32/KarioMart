@@ -50,6 +50,11 @@ public class CarHandler : MonoBehaviour
         carInitalized = true;
     }
 
+    public void ChangeMaxSpeed(float speedToAdd)
+    {
+        movement.SetNewMaxSpeed(speedToAdd);
+    }
+
     public void DisableInput()
     {
         inputManager.DisableInput();

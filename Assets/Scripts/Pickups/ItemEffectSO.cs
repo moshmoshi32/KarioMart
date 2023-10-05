@@ -10,9 +10,32 @@ namespace Pickups
         public float timerAmount;
         
             
-        public void ActivateEffect()
+        public void ActivateEffect(CarHandler player)
         {
-            
+            switch (itemEffect)
+            {
+                case ItemEffect.SpeedBoost:
+                    ActivateSpeedBoost(player);
+                    break;
+                default:
+                    Debug.Log("Effect doesn't exist");
+                    break;
+            }
+        }
+
+        private void ActivateSpeedBoost(CarHandler car)
+        {
+            car.ChangeMaxSpeed(speedBoost);
+            GameManager.Instance.TimerManager.CreateTimer(timerAmount,
+                speedBoost,
+                ResetSpeedBoost,
+                car);
+        }
+
+        private void ResetSpeedBoost(float negateSpeedBoost, CarHandler car)
+        {
+            car.ChangeMaxSpeed(-negateSpeedBoost);
+            Debug.Log($"Car Number{car.PlayerInputManager.GetPlayerIndex()} lost its boost");
         }
     }
 

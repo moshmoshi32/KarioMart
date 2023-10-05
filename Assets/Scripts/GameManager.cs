@@ -53,6 +53,10 @@ public class GameManager : MonoBehaviour
 
     private int playerWinnerIndex = -1;
 
+    private int playerAmount = 0;
+    
+    public TimerManager TimerManager { get; private set; }
+
     public int CheckPointAmount
     {
         get => checkPointAmount;
@@ -73,12 +77,18 @@ public class GameManager : MonoBehaviour
         pauseGame += PauseAction;
         restartScene += RestartCurrentLevel;
         playerPassedFinishLine += IncreasePlayersPassedGoal;
+
+        TimerManager = new TimerManager();
         
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void Update()
     {
+        if (!TimerManager.IsTimersListEmpty())
+        {
+            TimerManager.TickTimer(Time.deltaTime);
+        }
         if (uiManager.ShouldTick)
         {
             uiManager.updateTimer?.Invoke(Time.timeSinceLevelLoad);
@@ -187,23 +197,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void InitalizeGameState(int sceneIndex)
+    private void InitalizeGameState()
     {
         if (previousGameState == GameState.Paused)
         {
             Time.timeScale = 1;
             uiManager.ToggleTicking(true);
             ChangeCursorMode(CursorLockMode.Locked, false);
-            currentLevelData = Resources.Load<LevelData>($"ScriptableObject/Level {sceneIndex - 1}");
             return;
         }
-
-        if (previousGameState == GameState.Result)
-        {
-            uiManager.InitalizeGameUI();
-        }
+        
         //Get the current level data
-        currentLevelData = Resources.Load<LevelData>($"ScriptableObject/Level {sceneIndex - 1}");
         uiManager.gameObject.SetActive(true);
         uiManager.ToggleTicking(true);
         
@@ -211,9 +215,10 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Couldnt find the data level!");
         }
-        
+    
         playerInputManager.JoinPlayer();
         playerInputManager.JoinPlayer();
+
         InitalizeTrack();
         uiManager.InitalizeGameUI();
     }
@@ -239,7 +244,7 @@ public class GameManager : MonoBehaviour
         ChangeCursorMode(CursorLockMode.Confined, true);
     }
 
-    public void SetCurrentGameState(GameState newGameState, int sceneIndex = -1)
+    public void SetCurrentGameState(GameState newGameState)
     {
         previousGameState = CurrentGameState;
         CurrentGameState = newGameState;
@@ -249,7 +254,7 @@ public class GameManager : MonoBehaviour
                 LoadMainMenu();
                 break;
             case GameState.Playing:
-                InitalizeGameState(sceneIndex);
+                InitalizeGameState();
                 break;
             case GameState.Paused:
                 PauseGame();
@@ -269,6 +274,7 @@ public class GameManager : MonoBehaviour
         if (AllPlayersFinishedRace())
         {
             Debug.Log("Game done!");
+            playerAmount = 0;
             SetCurrentGameState(GameState.Result);
         }
     }
@@ -293,7 +299,8 @@ public class GameManager : MonoBehaviour
                 SetCurrentGameState(GameState.MainMenu);
                 break;
             default:
-                SetCurrentGameState(GameState.Playing, scene.buildIndex);
+                currentLevelData = Resources.Load<LevelData>($"ScriptableObject/Level {scene.buildIndex - 1}");
+                SetCurrentGameState(GameState.Playing);
                 break;
         }
     }
@@ -317,13 +324,12 @@ public class GameManager : MonoBehaviour
     private void PlayerJoined(PlayerInput input)
     {
         //Get a random car data
-        //TODO: Fix so that you can actually pick a car
         var randomCarIndex = Random.Range(0, avaliableCars.Count);
         var carHandler = input.GetComponent<CarHandler>();
-        Debug.Log(randomCarIndex);
         carHandler.InitalizeCar(avaliableCars[randomCarIndex]);
         input.SwitchCurrentControlScheme($"Keyboard{input.playerIndex + 1}", Keyboard.current);
         input.transform.position = currentLevelData.startPoints[input.playerIndex];
+        playerAmount++;
     }
 
     private void OnDestroy()

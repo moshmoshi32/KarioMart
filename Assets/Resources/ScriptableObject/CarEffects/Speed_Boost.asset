@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f05993d9c44b3c48afcfe0a8d04e388, type: 3}
-  m_Name: Level 2
+  m_Script: {fileID: 11500000, guid: a9992ff6e73e6254ca7f6fdc85e6f6c0, type: 3}
+  m_Name: Speed_Boost
   m_EditorClassIdentifier: 
-  startPoints:
-  - {x: -0.52, y: 0, z: -11.38}
-  - {x: 2.19, y: 0, z: -11.38}
-  maxLaps: 1
+  itemEffect: 1
+  speedBoost: 5
+  timerAmount: 2

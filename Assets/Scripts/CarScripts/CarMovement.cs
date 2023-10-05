@@ -39,6 +39,7 @@ public class CarMovement
 
     public void SetNewMaxSpeed(float newMaxSpeed)
     {
-        maxSpeed = newMaxSpeed;
+        maxSpeed += newMaxSpeed;
+        Debug.Log(maxSpeed);
     }
 }

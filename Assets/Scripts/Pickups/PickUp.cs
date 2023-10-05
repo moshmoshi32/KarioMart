@@ -1,18 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Pickups;
 using UnityEngine;
 
 public class PickUp : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] 
+    private ItemEffectSO effectToActivate;
+    private void OnTriggerEnter(Collider other)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        var player = other.GetComponent<CarHandler>();
+        if (player)
+        {
+            effectToActivate.ActivateEffect(player);
+        }
     }
 }
