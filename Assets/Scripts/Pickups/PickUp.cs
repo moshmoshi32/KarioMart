@@ -14,6 +14,7 @@ public class PickUp : MonoBehaviour
         if (player)
         {
             effectToActivate.ActivateEffect(player);
+            Destroy(gameObject);
         }
     }
 }

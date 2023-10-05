@@ -26,15 +26,5 @@ public class TimerManager
                 timers.Remove(timers[i]);
             }
         }
-
-        return;
-        foreach (var timer in timers)
-        {
-            if (timer == null) return; 
-            if(timer.Tick(deltaTime))
-            {
-                timers.Remove(timer);
-            }
-        }
     }
 }

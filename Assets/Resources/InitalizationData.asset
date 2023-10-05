@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b479a7ff179bc74194ee82ac62f5b55, type: 3}
   m_Name: InitalizationData
   m_EditorClassIdentifier: 
-  levelToLoad: 1
+  levelToLoad: 2
