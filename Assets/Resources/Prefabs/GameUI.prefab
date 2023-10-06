@@ -600,7 +600,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3161350554297911432}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: ReturnToMainMenu
+        m_MethodName: SaveData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -612,7 +612,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 3161350554297911432}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: SaveData
+        m_MethodName: ReturnToMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1142,6 +1142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timerText: {fileID: 6329210135261680700}
   lapText: {fileID: 2340884593085797116}
+  leaderBoardEntryTemplate: {fileID: 5139406726013336011, guid: bed7ff4d5bf21f141a1eed3dc39f28bf, type: 3}
   pauseMenu: {fileID: 704853137706065510}
   gamePanel: {fileID: 5333651481367197082}
   namePanel: {fileID: 4154062113599312390}
@@ -1557,7 +1558,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3161350554297911432}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: RestartLevel
+        m_MethodName: SaveData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1569,7 +1570,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 3161350554297911432}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: SaveData
+        m_MethodName: RestartLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2180,7 +2181,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3161350554297911432}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: NextLevel
+        m_MethodName: SaveData
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2192,7 +2193,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 3161350554297911432}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: SaveData
+        m_MethodName: NextLevel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

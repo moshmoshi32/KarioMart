@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class UIManager : MonoBehaviour
     [Header("Text References")]
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI lapText;
+    [SerializeField] private TextMeshProUGUI leaderBoardEntryTemplate;
     [Space]
     [Header("Panel References")]
     [SerializeField] private GameObject pauseMenu;
@@ -21,6 +23,8 @@ public class UIManager : MonoBehaviour
     private int maxLaps;
 
     public Action<float> updateTimer;
+
+    private List<GameObject> textObjects = new List<GameObject>();
 
     public bool ShouldTick { get; private set; }
 
@@ -85,12 +89,6 @@ public class UIManager : MonoBehaviour
     {
         pauseMenu.SetActive(toggle);
         gamePanel.SetActive(!toggle);
-/*
-        if (!toggle)
-        {
-            GameManager.Instance.SetCurrentGameState(GameState.Playing);
-        }
-        */
     }
 
     public void ResumeGame()
@@ -110,6 +108,47 @@ public class UIManager : MonoBehaviour
     {
         maxLaps = maxLap;
         lapText.text = $" 1 / {maxLap}";
+    }
+
+    private void LoadDataFromLeaderBoard(int level, List<GameObject> layouts)
+    { 
+       var leaderBoardData = LeaderBoard.LoadDataForSpecificLevel((LevelToLoad)level + 1);
+       if (leaderBoardData == null)
+       {
+           Debug.Log("No data!");
+           return;
+       }
+        /*
+         https://stackoverflow.com/questions/3309188/how-to-sort-a-listt-by-a-property-in-the-object
+         This sort method was taken from this webpage.
+         It creates a delegate method and orders the time by the lowest float to the highest float
+         and then converts it to a list.
+        */
+       List<PlayerData> test = leaderBoardData.OrderBy(x => x.timeFinished).ToList();
+       
+       foreach (var data in test)
+       {
+           var currentTextObject = Instantiate(leaderBoardEntryTemplate, layouts[level - 1].transform, false);
+           currentTextObject.text = $"Name: {data.playerName}\nTime: {data.timeFinished:n2}";
+           textObjects.Add(currentTextObject.gameObject);
+       }
+    }
+    
+
+    public void DisposeOfTextObjects()
+    {
+        foreach (var text in textObjects)
+        {
+            Destroy(text);
+        }
+    }
+
+    public void LoadAllLeaderBoards(List<GameObject> layouts)
+    {
+        for (int i = 0; i <= 3; i++)
+        {
+            LoadDataFromLeaderBoard(i, layouts);
+        }
     }
     
     private void OnEnable()

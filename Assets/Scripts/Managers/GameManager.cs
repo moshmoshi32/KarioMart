@@ -24,8 +24,6 @@ public class GameManager : MonoBehaviour
     public LevelToLoad currentLevelLoaded;
 
     private LevelToLoad previousLevelLoaded;
-    
-    private PlayerInputManager playerInputManager;
 
     private LevelData currentLevelData;
 
@@ -35,8 +33,6 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector]
     public int amountPlayersFinished = 0;
-
-    private UIManager uiManager;
 
     #region Actions
     
@@ -56,8 +52,16 @@ public class GameManager : MonoBehaviour
     private int playerWinnerIndex = -1;
     
     private float timeCompleted;
+
+    #region Managers
     
+    private PlayerInputManager playerInputManager;
+    
+    public UIManager uiManager { get; private set; }
     public TimerManager TimerManager { get; private set; }
+    
+    #endregion
+
 
     public int CheckPointAmount
     {
@@ -83,6 +87,7 @@ public class GameManager : MonoBehaviour
         TimerManager = new TimerManager();
         
         SceneManager.sceneLoaded += OnSceneLoaded;
+        LeaderBoard.InitalizeLeaderBoard();
     }
 
     private void Update()
@@ -269,7 +274,6 @@ public class GameManager : MonoBehaviour
                 EndGame();
                 break;
         }
-        //TODO: Add logic for switching states
     }
 
     private void IncreasePlayerFinished(int playerWon)
@@ -306,7 +310,6 @@ public class GameManager : MonoBehaviour
         TimerManager.DestroyAllTimers();
         if (CurrentGameState == GameState.Restarted)
         {
-            Debug.Log("????????????????");
             SetCurrentGameState(GameState.Playing);
             return;
         }
@@ -321,7 +324,6 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-    
     public void SaveData(string playerName)
     {
         Debug.Log(playerName);
@@ -330,10 +332,24 @@ public class GameManager : MonoBehaviour
             Debug.Log("Name is empty, returning...");
             return;
         }
-        
         LeaderBoard.SavePlayerData(previousLevelLoaded, playerName, timeCompleted);
         timeCompleted = 0;
     }
+    
+    [ContextMenu("Save")]
+    public void SaveData()
+    {
+        string playerName = "John";
+        Debug.Log(playerName);
+        if (string.IsNullOrEmpty(playerName))
+        {
+            Debug.Log("Name is empty, returning...");
+            return;
+        }
+        LeaderBoard.SavePlayerData(previousLevelLoaded, playerName, timeCompleted);
+        timeCompleted = 0;
+    }
+
     
     public void NextLevel()
     {
