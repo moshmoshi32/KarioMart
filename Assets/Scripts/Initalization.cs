@@ -10,8 +10,7 @@ public class Initalization
     private static void Initalize()
     {
         data = Resources.Load<IntilizationData>("InitalizationData");
-        List<CarInformationSO> cars = new List<CarInformationSO>();
-        cars = Resources.LoadAll<CarInformationSO>("ScriptableObject/CarTypes").ToList();
+        List<CarInformationSO> cars = Resources.LoadAll<CarInformationSO>("ScriptableObject/CarTypes").ToList();;
         GameObject go = new GameObject();
         go.name = "GameManager";
         var playerInputManager = go.AddComponent<PlayerInputManager>();
