@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   acceleration: 66.9
   maxSpeed: 15
-  rotationforce: 108
+  rotationforce: 12
   rotationRate: 0.6

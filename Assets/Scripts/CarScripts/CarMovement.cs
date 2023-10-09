@@ -34,12 +34,11 @@ public class CarMovement
 
     public void RotateHorizontally(float horizontalAxis)
     {
-        rb.AddTorque(carTransform.up * (rotationSpeed * horizontalAxis));
+        rb.AddTorque(carTransform.up * (rotationSpeed * horizontalAxis), ForceMode.Acceleration);
     }
 
     public void SetNewMaxSpeed(float newMaxSpeed)
     {
         maxSpeed += newMaxSpeed;
-        Debug.Log(maxSpeed);
     }
 }

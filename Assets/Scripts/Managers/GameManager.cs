@@ -284,7 +284,7 @@ public class GameManager : MonoBehaviour
         }
         playerWinnerIndex = playerWinnerIndex == -1 ? playerWon : playerWinnerIndex;
         amountPlayersFinished++;
-        Debug.Log($"Player {playerWinnerIndex + 1} finished at time: {Time.timeSinceLevelLoad}");
+
         if (AllPlayersFinishedRace())
         {
             Debug.Log("Game done!");

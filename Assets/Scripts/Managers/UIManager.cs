@@ -121,12 +121,12 @@ public class UIManager : MonoBehaviour
         /*
          https://stackoverflow.com/questions/3309188/how-to-sort-a-listt-by-a-property-in-the-object
          This sort method was taken from this webpage.
-         It creates a delegate method and orders the time by the lowest float to the highest float
+         It calls a LINQ function and orders the time by the lowest float to the highest float
          and then converts it to a list.
         */
-       List<PlayerData> test = leaderBoardData.OrderBy(x => x.timeFinished).ToList();
+       List<PlayerData> playerData = leaderBoardData.OrderBy(x => x.timeFinished).ToList();
        
-       foreach (var data in test)
+       foreach (var data in playerData)
        {
            var currentTextObject = Instantiate(leaderBoardEntryTemplate, layouts[level - 1].transform, false);
            currentTextObject.text = $"Name: {data.playerName}\nTime: {data.timeFinished:n2}";
