@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> leaderBoardLayouts = new List<GameObject>();
+    [SerializeField] private List<GameObject> leaderBoardLayouts = new();
     public void LoadGameScene(int scene)
     {
         GameManager.Instance.SwitchToSelectedScene((LevelToLoad)scene);
