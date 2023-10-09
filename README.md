@@ -11,12 +11,12 @@ or you can add it into your Unity list by clicking on Open and then selecting th
 Andrew Kart is a 2 player mario kart esque game where the goal is to reach the finish line as fast as possible.
 Each level can be configured with different spawn points, check points and laps. You can edit these in the Level Data Scriptable object
 
-#Game Mechaincs
+# Game Mechaincs
 The game also features power ups which the players can pick up and use, each level is seperate from eachother so that you can easily start at any level without needing to start-
 from a specific level, so if you wanted to try out X level, you would set it in the initzilation scriptable object that would then setup everything and
 send you to the level that you wanted to start from. It also features a leaderboard that tracks the best 5 players for each level.
 
-#Issues and mechanics I thought was fun to make.
+# Issues and mechanics I thought was fun to make.
 One of the first things I thought about during the project was: how do I make it as easy as possible to go through scenes and test different mechanics?
 
 And what I used was the methods that Sebastian described in his lectures which was Initalize the game before even starting the game using RuntimeInitializeOnLoadMethod attribute
@@ -34,7 +34,7 @@ modify to your needs as it is independent from everything else.
 Another difficult issue I had was the leaderboard, I had quite a lot of issues with the UI and how to setup the text so that they would form a line from first to last, but then I remembered
 about horizontal and vertical layout groups, which worked perfectly in my case as all I needed to do was to sort the list depending on the players time and it worked out great.
 
-#Conclusion
+# Conclusion
 It was a very fun project to work on, it was a bit slow in the end as I got a bit demotivated to work on it as I kept seeing some flaws that would require heavy rewriting to fix
 but in the end I felt like I learned a lot by doing this project.
 
