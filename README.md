@@ -4,7 +4,7 @@ Created by Mehmet Tanis
 
 Andrew Kart
 
-#Setup
+# Setup
 To run Andrew Kart, you can either extract the zip file that is included with this project and run the executable
 or you can add it into your Unity list by clicking on Open and then selecting the folder that you downloaded.
 
