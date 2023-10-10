@@ -9,13 +9,19 @@ To run Andrew Kart, you can either extract the zip file that is included with th
 or you can add it into your Unity list by clicking on Open and then selecting the folder that you downloaded after the project has opened you can navigate to-
 the Resources folder to the initalization scriptable object and choose which level you want to start at, and afterwards you can press play and enjoy the game.
 
-Andrew Kart is a 2 player mario kart esque game where the goal is to reach the finish line as fast as possible.
-Each level can be configured with different spawn points, check points and laps. You can edit these in the Level Data Scriptable object
+The unity version is: 2022.3.8f1
+
+# The Game
+The game is a mario kart clone with 2 player being able to race against each other, there are power ups that looks like squares that you can pick up
+After a race is finished you have several options to choose from, you can also save your best time in that level by entering your name in an input field
 
 # Game Mechaincs
 The game also features power ups which the players can pick up and use, each level is seperate from eachother so that you can easily start at any level without needing to start-
 from a specific level, so if you wanted to try out X level, you would set it in the initzilation scriptable object that would then setup everything and
 send you to the level that you wanted to start from. It also features a leaderboard that tracks the best 5 players for each level.
+
+Andrew Kart is a 2 player mario kart esque game where the goal is to reach the finish line as fast as possible.
+Each level can be configured with different spawn points, check points and laps. You can edit these in the Level Data Scriptable object
 
 # Issues and mechanics I thought was fun to make.
 One of the first things I thought about during the project was: how do I make it as easy as possible to go through scenes and test different mechanics?
