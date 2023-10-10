@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
     
     private PlayerInputManager playerInputManager;
     
-    public UIManager uiManager { get; private set; }
+    public UIManager UIManager { get; private set; }
     public TimerManager TimerManager { get; private set; }
     
     #endregion
@@ -92,23 +92,23 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (!TimerManager.IsTimersListEmpty() && uiManager.ShouldTick)
+        if (!TimerManager.IsTimersListEmpty() && UIManager.ShouldTick)
         {
             TimerManager.TickTimer(Time.deltaTime);
         }
-        if (uiManager.ShouldTick)
+        if (UIManager.ShouldTick)
         {
-            uiManager.updateTimer?.Invoke(Time.timeSinceLevelLoad);
+            UIManager.updateTimer?.Invoke(Time.timeSinceLevelLoad);
         }
     }
 
-    public void PopulateCarInformation(List<CarInformationSO> cars)
+    private void PopulateCarInformation(List<CarInformationSO> cars)
     {
         avaliableCars = cars;
     }
     private void PauseAction(bool pause)
     {
-        if (currentLevelLoaded == LevelToLoad.MainMenu) return;
+        if (currentLevelLoaded == LevelToLoad.MainMenu || CurrentGameState == GameState.Result) return;
         SetCurrentGameState(GameState.Paused);
     }
 
@@ -116,8 +116,8 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 0;
         ChangeCursorMode(CursorLockMode.Confined, true);
-        uiManager.ToggleTicking(false);
-        uiManager.ToggleGameAndPausePanel(true);
+        UIManager.ToggleTicking(false);
+        UIManager.ToggleGameAndPausePanel(true);
     }
 
     public int GetMaxLaps() => currentLevelData.maxLaps;
@@ -157,7 +157,7 @@ public class GameManager : MonoBehaviour
     private void IncreaseLapUI()
     {
         currentGlobalLap++;
-        uiManager.UpdateLaps(currentGlobalLap);
+        UIManager.UpdateLaps(currentGlobalLap);
     }
 
     private void ChangeCursorMode(CursorLockMode lockMode, bool visible)
@@ -177,66 +177,66 @@ public class GameManager : MonoBehaviour
         currentLevelLoaded = levelToLoad;
     }
 
-    public void InitalizePreState(PlayerInputManager inputManager, List<CarInformationSO> cars)
+    public void InitializePreState(PlayerInputManager inputManager, List<CarInformationSO> cars)
     {
         PopulateCarInformation(cars);
         playerInputManager = inputManager;
         
         playerInputManager.onPlayerJoined += PlayerJoined;
         
-        InitalizeGameUI();
+        InitializeGameUI();
     }
 
-    private void InitalizeGameUI()
+    private void InitializeGameUI()
     {
-        if (uiManager == null)
+        if (UIManager == null)
         {
             var gameUI = Resources.Load<UIManager>("Prefabs/GameUI");
             var currentUI = Instantiate(gameUI);
-            uiManager = currentUI;
-            DontDestroyOnLoad(uiManager);
-            uiManager.ToggleTicking(false);
-            uiManager.gameObject.SetActive(false);
+            UIManager = currentUI;
+            DontDestroyOnLoad(UIManager);
+            UIManager.ToggleTicking(false);
+            UIManager.gameObject.SetActive(false);
         }
         else
         {
-            uiManager.gameObject.SetActive(true);
+            UIManager.gameObject.SetActive(true);
         }
     }
 
-    private void InitalizeGameState()
+    private void InitializeGameState()
     {
         if (previousGameState == GameState.Paused)
         {
             Time.timeScale = 1;
-            uiManager.ToggleTicking(true);
+            UIManager.ToggleTicking(true);
             ChangeCursorMode(CursorLockMode.Locked, false);
             return;
         }
-        InitalizeCurrentScene();
+        InitializeCurrentScene();
     }
 
-    private void InitalizeCurrentScene()
+    private void InitializeCurrentScene()
     {
         //Get the current level data
-        uiManager.gameObject.SetActive(true);
-        uiManager.ToggleTicking(true);
+        UIManager.gameObject.SetActive(true);
+        UIManager.ToggleTicking(true);
         
         if (!currentLevelData)
         {
-            Debug.LogError("Couldnt find the data level!");
+            Debug.LogError("Couldn't find the data level!");
         }
     
         playerInputManager.JoinPlayer();
         playerInputManager.JoinPlayer();
 
-        InitalizeTrack();
-        uiManager.InitalizeGameUI(); 
+        InitializeTrack();
+        UIManager.InitalizeGameUI(); 
     }
 
-    private void InitalizeTrack()
+    private void InitializeTrack()
     {
-        uiManager.InitalizeLapText(currentLevelData.maxLaps);
+        UIManager.InitalizeLapText(currentLevelData.maxLaps);
         amountPlayersFinished = 0;
         checkPointAmount = 0;
         currentGlobalLap = 1;
@@ -250,8 +250,8 @@ public class GameManager : MonoBehaviour
     {
         var test = Resources.Load("Prefabs/MainMenu") as GameObject;
         Instantiate(test);
-        uiManager.ToggleTicking(true);
-        uiManager.gameObject.SetActive(false);
+        UIManager.ToggleTicking(true);
+        UIManager.gameObject.SetActive(false);
         ChangeCursorMode(CursorLockMode.Confined, true);
     }
 
@@ -265,7 +265,7 @@ public class GameManager : MonoBehaviour
                 LoadMainMenu();
                 break;
             case GameState.Playing:
-                InitalizeGameState();
+                InitializeGameState();
                 break;
             case GameState.Paused:
                 PauseGame();
@@ -295,7 +295,8 @@ public class GameManager : MonoBehaviour
     private void EndGame()
     {
         Debug.Log($"Player{playerWinnerIndex + 1} won!");
-        uiManager.VictoryScreen();
+        UIManager.VictoryScreen();
+        UIManager.SetPlayerWon(playerWinnerIndex + 1);
         ChangeCursorMode(CursorLockMode.Confined, true);
     }
 
@@ -326,20 +327,6 @@ public class GameManager : MonoBehaviour
     }
     public void SaveData(string playerName)
     {
-        Debug.Log(playerName);
-        if (string.IsNullOrEmpty(playerName))
-        {
-            Debug.Log("Name is empty, returning...");
-            return;
-        }
-        LeaderBoard.SavePlayerData(previousLevelLoaded, playerName, timeCompleted);
-        timeCompleted = 0;
-    }
-    
-    [ContextMenu("Save")]
-    public void SaveData()
-    {
-        string playerName = "John";
         Debug.Log(playerName);
         if (string.IsNullOrEmpty(playerName))
         {

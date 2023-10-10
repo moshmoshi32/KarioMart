@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private TextMeshProUGUI lapText;
     [SerializeField] private TextMeshProUGUI leaderBoardEntryTemplate;
+    [SerializeField] private TextMeshProUGUI playerWonText;
     [Space]
     [Header("Panel References")]
     [SerializeField] private GameObject pauseMenu;
@@ -141,6 +142,11 @@ public class UIManager : MonoBehaviour
         {
             Destroy(text);
         }
+    }
+
+    public void SetPlayerWon(int playerIndex)
+    {
+        playerWonText.text = $"Player {playerIndex} won!";
     }
 
     public void LoadAllLeaderBoards(List<GameObject> layouts)
