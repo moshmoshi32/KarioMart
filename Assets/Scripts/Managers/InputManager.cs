@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputManager
@@ -11,8 +8,6 @@ public class InputManager
     public float VerticalMovementProperty { get; private set; }
 
     public float HorizontalMovementProperty { get; private set; }
-    
-    public bool PauseProperty { get; private set; }
 
     public int GetPlayerIndex() => input.playerIndex;
     #endregion

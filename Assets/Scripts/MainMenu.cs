@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,12 +11,12 @@ public class MainMenu : MonoBehaviour
     
     public void LoadAllLeaderBoards()
     {
-        GameManager.Instance.uiManager.LoadAllLeaderBoards(leaderBoardLayouts);
+        GameManager.Instance.UIManager.LoadAllLeaderBoards(leaderBoardLayouts);
     }
 
     public void RemoveAllText()
     {
-        GameManager.Instance.uiManager.DisposeOfTextObjects();
+        GameManager.Instance.UIManager.DisposeOfTextObjects();
     }
 
     public void QuitGame()

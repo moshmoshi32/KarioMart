@@ -3,19 +3,21 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Initalization
+public static class Initalization
 {
     private static IntilizationData data;
     [RuntimeInitializeOnLoadMethod]
     private static void Initalize()
     {
         data = Resources.Load<IntilizationData>("InitalizationData");
-        List<CarInformationSO> cars = Resources.LoadAll<CarInformationSO>("ScriptableObject/CarTypes").ToList();;
-        GameObject go = new GameObject();
-        go.name = "GameManager";
+        List<CarInformationSO> cars = Resources.LoadAll<CarInformationSO>("ScriptableObject/CarTypes").ToList();
+        GameObject go = new GameObject
+        {
+            name = "GameManager"
+        };
         var playerInputManager = go.AddComponent<PlayerInputManager>();
         var gameManager = go.AddComponent<GameManager>();
-        gameManager.InitalizePreState(playerInputManager, cars);
+        gameManager.InitializePreState(playerInputManager, cars);
         
         playerInputManager.notificationBehavior = PlayerNotifications.InvokeCSharpEvents;
         playerInputManager.joinBehavior = PlayerJoinBehavior.JoinPlayersManually;

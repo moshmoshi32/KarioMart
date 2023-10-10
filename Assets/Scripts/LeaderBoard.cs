@@ -7,7 +7,7 @@ using UnityEngine;
 public static class LeaderBoard
 {
     private static bool dataLoaded = false;
-    private static string filePath = $"{Application.persistentDataPath}/PlayerData.json";
+    private static readonly string filePath = $"{Application.persistentDataPath}/PlayerData.json";
     private static List<PlayerData> allPlayersData;
 
     public static void InitalizeLeaderBoard()
