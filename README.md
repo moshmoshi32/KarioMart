@@ -6,7 +6,8 @@ Andrew Kart
 
 # Setup
 To run Andrew Kart, you can either extract the zip file that is included with this project and run the executable
-or you can add it into your Unity list by clicking on Open and then selecting the folder that you downloaded.
+or you can add it into your Unity list by clicking on Open and then selecting the folder that you downloaded after the project has opened you can navigate to-
+the Resources folder to the initalization scriptable object and choose which level you want to start at, and afterwards you can press play and enjoy the game.
 
 Andrew Kart is a 2 player mario kart esque game where the goal is to reach the finish line as fast as possible.
 Each level can be configured with different spawn points, check points and laps. You can edit these in the Level Data Scriptable object
