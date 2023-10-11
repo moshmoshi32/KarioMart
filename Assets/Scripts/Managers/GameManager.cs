@@ -229,6 +229,7 @@ public class GameManager : MonoBehaviour
     
         playerInputManager.JoinPlayer();
         playerInputManager.JoinPlayer();
+        playerInputManager.JoinPlayer();
 
         InitializeTrack();
         UIManager.InitalizeGameUI(); 

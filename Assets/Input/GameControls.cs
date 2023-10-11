@@ -57,7 +57,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
             ],
             ""bindings"": [
                 {
-                    ""name"": ""VerticalAxis"",
+                    ""name"": ""VerticalAxisP1"",
                     ""id"": ""3fca6673-788b-48a3-bf24-22c96dcb72e0"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -90,7 +90,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""1D Axis"",
+                    ""name"": ""VerticalAxisP2"",
                     ""id"": ""b0cec740-daab-4d3e-b997-65c869274e77"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -123,7 +123,40 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""1D Axis"",
+                    ""name"": ""VerticalAxisP3"",
+                    ""id"": ""149d73aa-83d1-4d13-8265-5887ceb4a375"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""VerticalMovement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""0e6ca208-b1ae-4cbc-888a-1590dcdc67b5"",
+                    ""path"": ""<Keyboard>/numpad2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard3"",
+                    ""action"": ""VerticalMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""e565e140-b7ec-42df-9b58-7cbf1aaffbf0"",
+                    ""path"": ""<Keyboard>/numpad8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard3"",
+                    ""action"": ""VerticalMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""HorizontalAxisP1"",
                     ""id"": ""c2bfeef8-7b24-48d8-bd16-664b9a40223e"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -156,7 +189,7 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""1D Axis"",
+                    ""name"": ""HorizontalAxisP2"",
                     ""id"": ""4398ac54-e998-4942-9a95-73f937231658"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -184,6 +217,39 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard2"",
+                    ""action"": ""HorizontalMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""HorizontalP3"",
+                    ""id"": ""53763ef4-e0ae-4fc8-bf0e-c2cd2da13dc9"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HorizontalMovement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""411a74ab-a359-4552-8a81-11101a9f2da8"",
+                    ""path"": ""<Keyboard>/numpad4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard3"",
+                    ""action"": ""HorizontalMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""4a8b9e71-75f7-4b00-8089-0640f32b98b1"",
+                    ""path"": ""<Keyboard>/numpad6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard3"",
                     ""action"": ""HorizontalMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -217,6 +283,17 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         {
             ""name"": ""Keyboard2"",
             ""bindingGroup"": ""Keyboard2"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": true,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Keyboard3"",
+            ""bindingGroup"": ""Keyboard3"",
             ""devices"": [
                 {
                     ""devicePath"": ""<Keyboard>"",
@@ -367,6 +444,15 @@ public partial class @GameControls: IInputActionCollection2, IDisposable
         {
             if (m_Keyboard2SchemeIndex == -1) m_Keyboard2SchemeIndex = asset.FindControlSchemeIndex("Keyboard2");
             return asset.controlSchemes[m_Keyboard2SchemeIndex];
+        }
+    }
+    private int m_Keyboard3SchemeIndex = -1;
+    public InputControlScheme Keyboard3Scheme
+    {
+        get
+        {
+            if (m_Keyboard3SchemeIndex == -1) m_Keyboard3SchemeIndex = asset.FindControlSchemeIndex("Keyboard3");
+            return asset.controlSchemes[m_Keyboard3SchemeIndex];
         }
     }
     public interface ICarActions
